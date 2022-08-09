@@ -1,0 +1,92 @@
+# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+title: "Quick start to setup the Email Delivery"
+stackDescription: "This Quick start will setup a Email Delivery service."
+schemaVersion: 1.1.0
+version: "20200301"
+locale: "en"
+
+variableGroups:
+- title: ${Messages.solutionsHub.generalConfig()}
+  visible: false
+  variables:
+  - tenancy_ocid
+  - current_user_ocid
+
+- title: ${Messages.solutionsHub.requiredConfig()}
+  visible: true
+  variables:
+  - region
+  - compartment_ocid
+  - email_domain_name
+  - sender_email_address
+  - generate_smtp_credentials
+  - generate_dkim
+
+- title: SMTP Credentials
+  visible:
+    and:
+      - or:
+        - eq:
+          - generate_smtp_credentials
+          - true
+  variables:
+  - smtp_credential_description
+
+variables:
+
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    title: ${Messages.solutionsHub.genericVariables.compartment.title()}
+    description: ${Messages.solutionsHub.genericVariables.compartment.description()}
+
+  region:
+    type: oci:identity:region:name
+    required: true
+    title: "Region"
+    description: "Region where the stack will be deployed."
+
+  email_domain_name:
+    type: string
+    required: false
+    title: "Email domain"
+    description: "Email domain to create"
+
+  sender_email_address:
+    type: string
+    required: true
+    title: "Sender Email address"
+    description: "Email address which will be in the from field"
+
+  generate_dkim:
+    type: boolean
+    required: true
+    title: "Generate DKIM"
+    description: "Select if you want to generate DKIM."
+
+  generate_smtp_credentials:
+    type: boolean
+    required: true
+    title: "Generate SMTP Credentials"
+    description: "Select if you want to generate SMTP credentials."
+
+  smtp_credential_description:
+    type: string
+    title: "SMTP credentials description"
+    required: true
+
+outputs:
+  generated_smtp_username:
+    type: string
+    title: SMTP Credentials
+    displayText: Username for SMTP
+    visible: true
+    sensitive: true
+
+  generated_smtp_password:
+    type: string
+    title: SMTP Credentials
+    displayText: SMTP Password
+    sensitive: true
