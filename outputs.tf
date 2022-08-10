@@ -2,25 +2,25 @@
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 output "generated_smtp_password" {
-  count = var.generate_smtp_credentials ? 1 : 0
-  value     = oci_identity_smtp_credential.smtp_credential.password
+  depends_on = [ oci_identity_smtp_credential.smtp_credential[0]]
+  value     = oci_identity_smtp_credential.smtp_credential[0].password
   sensitive = true
 }
 
 output "generated_smtp_username" {
-  count = var.generate_smtp_credentials ? 1 : 0
-  value     = oci_identity_smtp_credential.smtp_credential.username
+  depends_on = [ oci_identity_smtp_credential.smtp_credential[0]]
+  value     = oci_identity_smtp_credential.smtp_credential[0].username
   sensitive = true
 }
 
 output "generated_dkim_txt_record" {
-  count = var.generate_dkim ? 1 : 0
-  value     = oci_email_dkim.dkim.txt_record_value
+  depends_on = [ oci_email_dkim.dkim[0]]
+  value     = oci_email_dkim.dkim[0].txt_record_value
   sensitive = false
 }
 
 output "generated_dkim_cname_record" {
-  count = var.generate_dkim ? 1 : 0
-  value     = oci_email_dkim.dkim.cname_record_value
+  depends_on = [ oci_email_dkim.dkim[0]]
+  value     = oci_email_dkim.dkim[0].cname_record_value
   sensitive = false
 }

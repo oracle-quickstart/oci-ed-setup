@@ -17,6 +17,7 @@ resource "oci_email_sender" "sender" {
 }
 
 resource "oci_identity_smtp_credential" "smtp_credential" {
+    count = var.generate_smtp_credentials ? 1 : 0
     provider = oci.homeregion
     description = var.smtp_credential_description
     user_id = var.current_user_ocid
